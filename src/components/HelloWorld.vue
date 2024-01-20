@@ -12,7 +12,7 @@ export default {
   data() {
     return {
       facebookAppId: "1089304505816463",
-      facebookRedirectUrl: "http://localhost:5173/callback",
+      facebookRedirectUrl: "http://localhost:8080/callback",
     };
   },
   methods: {
