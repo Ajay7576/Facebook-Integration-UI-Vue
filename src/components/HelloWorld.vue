@@ -42,13 +42,13 @@ export default {
   data() {
     return {
       facebookAppId: "1089304505816463",
+      //facebookRedirectUrl: "https://missing-someone.onrender.com/callback",
       facebookRedirectUrl: "https://localhost:8080/callback",
-
-      InstagramGraphApiBaseUrl: "https://graph.instagram.com/v18.0",
       InstagramAppId: "1089304505816463",
-      InstagramAppSecret: "854bdfc07183a4f1af82588fc2c7b9a5",
-      instagramRedirectUri: "https://localhost:8080/callback", // Update with your redirect URI
-      Scope: "instagram_basic pages_show_list pages_manage_posts",
+      instagramRedirectUri: "https://localhost:8080/callback",
+      // instagramRedirectUri: "https://missing-someone.onrender.com/callback", // Update with your redirect URI
+      Scope:
+        "email read_insights pages_show_list business_management instagram_basic instagram_manage_comments instagram_manage_insights instagram_content_publish instagram_manage_messages page_events pages_read_engagement pages_read_user_content pages_manage_posts",
     };
   },
   methods: {
@@ -76,10 +76,10 @@ export default {
             authorizationUrl =
               `https://www.facebook.com/v18.0/dialog/oauth` +
               `?response_type=code%20granted_scopes` +
-              `&client_id=${this.facebookAppId}` +
-              `&redirect_uri=${encodeURIComponent(this.facebookRedirectUrl)}` +
+              `&client_id=${this.InstagramAppId}` +
+              `&redirect_uri=${encodeURIComponent(this.instagramRedirectUri)}` +
               `&scope=${this.Scope}` +
-              `&state=${this.generateRandomState()}`;
+              `&state=${this.generateInstagramState()}`;
 
             //authorizationUrl = `${this.InstagramGraphApiBaseUrl}/oauth/authorize?client_id=${this.InstagramAppId}&redirect_uri=${this.instagramRedirectUri}&scope=${this.Scope}&response_type=code`;
 
@@ -105,6 +105,11 @@ export default {
     },
     generateRandomState() {
       var key = "MyFbKey";
+      return key;
+    },
+
+    generateInstagramState() {
+      var key = "MyInstaKey";
       return key;
     },
   },

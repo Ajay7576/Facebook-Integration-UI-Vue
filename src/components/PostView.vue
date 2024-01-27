@@ -47,13 +47,12 @@
 import axios from "axios";
 
 export default {
-  name: "UploadMultipleFile",
+  name: "PostView",
 
   data() {
     return {
       files: [],
       message: "",
-      caption: "",
       grantedScopes: "",
       deniedScopes: "",
       state: "",
@@ -66,16 +65,20 @@ export default {
     this.deniedScopes = this.$route.query.denied_scopes;
     this.state = this.$route.query.state;
     this.code = this.$route.query.code;
+    console.log("this.state", this.state);
   },
 
   methods: {
     previewImage(event) {
+      debugger; // eslint-disable-line no-debugger
+
       const input = event.target;
       if (input.files && input.files[0]) {
         const reader = new FileReader();
 
         reader.onload = (e) => {
           this.imageUrl = e.target.result;
+          console.log("this.imageUrl", this.imageUrl);
         };
 
         reader.readAsDataURL(input.files[0]);
@@ -92,26 +95,49 @@ export default {
 
       const formData = new FormData();
 
-      for (const i of Object.keys(this.files)) {
-        formData.append("files", this.files[i]);
-      }
-
-      formData.append("message", this.message);
-      formData.append("caption", this.caption);
-      formData.append("code", this.code);
-      formData.append("state", this.state);
-
       console.log("formdata", formData);
-      try {
-        const res = await axios.post(
-          "https://localhost:7143/Facebook/CreatePost",
-          formData
-        );
-        console.log(res);
-      } catch (err) {
-        console.error(err);
-      }
 
+      if (this.state == "MyInstaKey") {
+        // upload picture cloudanry
+
+        for (const i of Object.keys(this.files)) {
+          formData.append("files", this.files[i]);
+        }
+
+        formData.append("caption", this.message);
+        formData.append("code", this.code);
+        formData.append("state", this.state);
+        try {
+          const res = await axios.post(
+            "https://localhost:7143/api/Instagram/createPostInstagram",
+            formData
+          );
+          console.log(res);
+        } catch (err) {
+          console.error(err);
+        }
+      } else if (this.state == "MyFbKey") {
+        debugger; // eslint-disable-line no-debugger
+
+        for (const i of Object.keys(this.files)) {
+          formData.append("files", this.files[i]);
+        }
+
+        formData.append("message", this.message);
+        formData.append("code", this.code);
+        formData.append("state", this.state);
+
+        try {
+          const res = await axios.post(
+            "https://localhost:7143/Facebook/CreatePost",
+            formData
+          );
+
+          console.log(res);
+        } catch (err) {
+          console.error(err);
+        }
+      }
       //this.$router.push({ name: "home" });
     },
   },
